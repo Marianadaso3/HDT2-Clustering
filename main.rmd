@@ -145,7 +145,7 @@ Determinar la calidad del agrupamiento hecho por cada algoritmo
 library(cluster)
 data(iris)
 iris_data <- iris[, -5]
-kmeans_result <- kmeans(iris_data, centers = 3)
+kmeans_result <- kmeans(iris_data, centers = 5)
 wcss <- kmeans_result$tot.withinss
 dbi <- data(iris_data, kmeans_result$cluster)
 silhouette <- silhouette(kmeans_result$cluster, dist(iris_data))
