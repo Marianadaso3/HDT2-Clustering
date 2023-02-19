@@ -113,32 +113,48 @@ ggplot(data.frame(x=1:15, y=wss), aes(x, y)) +
   theme_minimal()
 
 ```
+Podemos observar que aproximadamente la grafica empieza a aplanarse en 5 entonces podemos decir que la cantidad de clusteres a trabajar es esta.
+
 
 
 
 #4 Utilice los algoritmos k-medias y clustering jerárquico para agrupar. Compare los resultados generados por cada uno
 
-k-means
+podemos obtener k-means y clustering jerargico de la siguiente manera
 ```{r}
-data <- read.csv("movies.csv")
-selected_data <- data[, c("budget", "revenue", "runtime")]
-scaled_data <- scale(selected_data)
-
-kmeans_result <- kmeans(scaled_data, centers = 3)
-kmeans_result$cluster
-```
-Clustering Jerárgico 
-```{r}
-data <- read.csv("movies.csv")
-selected_data <- data[, c("budget", "revenue", "runtime")]
-scaled_data <- scale(selected_data)
-
-dist_matrix <- dist(scaled_data, method = "euclidean")
-hc <- hclust(dist_matrix, method = "complete")
-plot(hc, cex = 0.8, hang = -0.1, main = "Dendrograma de Clustering Jerárquico")
-
+movies <- read.csv("movies.csv")
+# Seleccionando unicamente los campos a usar
+movies <- movies[, c("budget", "revenue", "runtime","popularity", "voteAvg", "voteCount")]
+movies_norm <- scale(movies)
+set.seed(123)
+#k-means
+kmeans_res <- kmeans(movies_norm, centers = 5)
+clusters_kmeans <- kmeans_res$cluster
+# Clustering gerargico
+hclust_res <- hclust(dist(movies_norm), method = "complete")
+clusters_hclust <- cutree(hclust_res, k = 5)
 
 ```
+
+Con las variables clusters_kmeans y clusters_hclust, podemos hacer una comparación.
+
+```{r}
+# Creamos una tabla
+table(clusters_kmeans, clusters_hclust)
+library(ggplot2)
+movies_plot <- data.frame(movies_norm, cluster = clusters_kmeans)
+ggplot(movies_plot, aes(x = budget, y = revenue, color = factor(cluster))) + geom_point()
+
+movies_plot <- data.frame(movies_norm, cluster = clusters_hclust)
+ggplot(movies_plot, aes(x = budget, y = revenue, color = factor(cluster))) + geom_point()
+
+```
+
+Gracias a la comparación de datos, podemos decir que k-means es mas adecuado para datasets grandes, dado que al utilizar la distancia euclariana para calcular la simulitud de los puntos no necesitamos de una matriz completa, esto hace que sea más rápido en datasets con muchas observaciones. Otro punto importante es que el numero de clusters es definido antes de la ejecución, esto hace que sea escalable fácilmente, nos permite dividir el dataset en un gran numero de clusters. También podemos concluir que el algoritmo de clustering jeráquico es más adecuado para datasets pequeños como este, dado que es el caso opuesto a k-means respecto a su escalabilidad, ya que el numero de clusters se define después de la ejecución, además calcula la distancia entre todos los pares de puntos y genera una matriz completa de distancias, esto hace que sea demasiado costoso implementar.
+
+
+
+
 
 #5 Determinar la calidad del agrupamiento hecho por cada algoritmo 
 ```{r}
