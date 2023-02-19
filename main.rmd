@@ -140,7 +140,7 @@ plot(hc, cex = 0.8, hang = -0.1, main = "Dendrograma de Clustering Jerárquico")
 
 ```
 
-Determinar la calidad del agrupamiento hecho por cada algoritmo 
+#5 Determinar la calidad del agrupamiento hecho por cada algoritmo 
 ```{r}
 library(cluster)
 data(iris)
@@ -152,5 +152,68 @@ silhouette <- silhouette(kmeans_result$cluster, dist(iris_data))
 cat("Within Cluster Sum of Squares (WCSS): ", wcss, "\n")
 cat("Davies-Bouldin Index (DBI): ", dbi, "\n")
 cat("Silhouette Width: ", mean(silhouette[, 3]), "\n")
+```
+#6 Interprete los grupos basado en el conocimiento que tiene de los datos. Recuerde investigar las medidas de tendencia central de las variables continuas y las tablas de frecuencia de las variables categóricas pertenecientes a cada grupo. Identifique hallazgos interesantes debido a las agrupaciones y describa para qué le podría servir.
+```{r}
+# Read data from file
+datos <- read.csv("movies.csv")
+
+datos <- datos[complete.cases(datos), ]
+
+media <- mean(datos$budget)
+cat("La media es:", media, "\n")
+
+mediana <- median(datos$budget)
+cat("La mediana es:", mediana, "\n")
+
+moda <- function(x) {
+  ux <- unique(x)
+  ux[which.max(tabulate(match(x, ux)))]
+}
+m <- moda(datos$budget)
+cat("La moda es:", m, "\n")
+```
+
+
+```{r}
+
+# Read data from file
+datos <- read.csv("movies.csv")
+
+datos <- datos[complete.cases(datos), ]
+
+media <- mean(datos$runtime)
+cat("La media es:", media, "\n")
+
+mediana <- median(datos$runtime)
+cat("La mediana es:", mediana, "\n")
+
+moda <- function(x) {
+  ux <- unique(x)
+  ux[which.max(tabulate(match(x, ux)))]
+}
+m <- moda(datos$runtime)
+cat("La moda es:", m, "\n")
+
+```
+
+```{r}
+# Read data from file
+datos <- read.csv("movies.csv")
+
+datos <- datos[complete.cases(datos), ]
+
+media <- mean(datos$revenue)
+cat("La media es:", media, "\n")
+
+mediana <- median(datos$revenue)
+cat("La mediana es:", mediana, "\n")
+
+moda <- function(x) {
+  ux <- unique(x)
+  ux[which.max(tabulate(match(x, ux)))]
+}
+m <- moda(datos$revenue)
+cat("La moda es:", m, "\n")
 ```
 
