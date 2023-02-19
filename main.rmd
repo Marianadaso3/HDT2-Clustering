@@ -48,6 +48,7 @@ clusteringVar <- scale(cle) # nolint
 
 Las variables que no son correctas de utilizar son aquellas definidas como categóricas. Esto se debe a que al no ser numericas como tal, no son las mas adecuadas para el análisis.
 Por otro lado, las que si pueden se4r factibles para proporcionar datos analiticos correctos son todas aquellas que son numéricas para poder establecer relaciones.
+<br/> 
 <br/> Las varibales que se usaron para este análisis son las siguientes:
 <br/> popularity: Que es el índice de popularity de la película calculado semanalmente
 <br/> revenue: El ingreso de la película
@@ -65,3 +66,14 @@ datos_dist <- dist(clusteringVar)
 ```
 Al aplicar el metodo de Hopkins podemos observar que el valor estadístico que obtenemos es de 0.999, el cual se encuentra
 lejano al valor guia de 0.5. Esto significa que los datos no son aleatorios, involucrando que si es factible que estos mismos sean agurpados.  
+
+
+<br/> Ahora bien usando un método gráfico/ la VAT (Visual Assessmento f cluster Tendency), se puede visualizar de la sigueinte manera:
+<br/>
+```{r}
+knitr::opts_chunk$set(fig.width = 20, fig.height = 10)
+fviz_dist(datos_dist, show_labels = FALSE)
+```
+<br/>
+Como se puede observar si existen patrones en la grafica, tiene cualidades compartidas y por ende agrupales. 
+También confirma nuevamente el resultado Hopkins.
