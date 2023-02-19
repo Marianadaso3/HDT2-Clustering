@@ -77,3 +77,35 @@ fviz_dist(datos_dist, show_labels = FALSE)
 <br/>
 Como se puede observar si existen patrones en la grafica, tiene cualidades compartidas y por ende agrupales. 
 También confirma nuevamente el resultado Hopkins.
+
+
+
+
+
+
+
+
+
+#4 Utilice los algoritmos k-medias y clustering jerárquico para agrupar. Compare los resultados generados por cada uno
+
+k-means
+```{r}
+data <- read.csv("movies.csv")
+selected_data <- data[, c("budget", "revenue", "runtime")]
+scaled_data <- scale(selected_data)
+
+kmeans_result <- kmeans(scaled_data, centers = 3)
+kmeans_result$cluster
+```
+Clustering Jerárgico 
+```{r}
+data <- read.csv("movies.csv")
+selected_data <- data[, c("budget", "revenue", "runtime")]
+scaled_data <- scale(selected_data)
+
+dist_matrix <- dist(scaled_data, method = "euclidean")
+hc <- hclust(dist_matrix, method = "complete")
+plot(hc, cex = 0.8, hang = -1, main = "Dendrograma de Clustering Jerárquico")
+
+
+```
