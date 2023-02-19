@@ -78,11 +78,41 @@ fviz_dist(datos_dist, show_labels = FALSE)
 Como se puede observar si existen patrones en la grafica, tiene cualidades compartidas y por ende agrupales. 
 También confirma nuevamente el resultado Hopkins.
 
+# 3. Determine cuál es el número de grupos a formar más adecuado para los datos que está trabajando.Haga una gráfica de codo y explique la razón de la elección de la cantidad de clústeres con la que trabajará.
 
 
 
+```{r}
 
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(factoextra)
+library(cluster)
 
+library(dplyr)
+
+# Leer el archivo csv
+movies <- read.csv("movies.csv")
+
+# Seleccionar solo las variables numéricas
+movies_numeric <- select_if(movies, is.numeric)
+
+# Estandarizar las variables
+movies_std <- scale(movies_numeric)
+
+# Realizar el clustering con diferentes números de clusters
+set.seed(123)
+wss <- sapply(1:15, function(k){kmeans(movies_std, k, nstart=10)$tot.withinss})
+
+# Graficar la curva del codo
+ggplot(data.frame(x=1:15, y=wss), aes(x, y)) +
+  geom_point() +
+  geom_line() +
+  labs(x = "Number of clusters", y = "Within cluster sum of squares") +
+  theme_minimal()
+
+```
 
 
 
@@ -105,7 +135,7 @@ scaled_data <- scale(selected_data)
 
 dist_matrix <- dist(scaled_data, method = "euclidean")
 hc <- hclust(dist_matrix, method = "complete")
-plot(hc, cex = 0.8, hang = -1, main = "Dendrograma de Clustering Jerárquico")
+plot(hc, cex = 0.8, hang = -0.1, main = "Dendrograma de Clustering Jerárquico")
 
 
 ```
