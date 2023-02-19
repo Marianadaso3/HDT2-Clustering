@@ -259,3 +259,5 @@ run_freq <- table(data$runtime)
 
 run_freq
 ```
+
+Con la organizacion de los datos se puede ver cuales son los más repetitivos y al igual se puede observar que el cluster consigue una mayor organización de los mismos.
