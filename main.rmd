@@ -233,3 +233,29 @@ m <- moda(datos$revenue)
 cat("La moda es:", m, "\n")
 ```
 
+```{r}
+
+data <- read.csv("movies.csv")
+
+budget_freq <- table(data$budget)
+
+budget_freq
+```
+
+```{r}
+
+data <- read.csv("movies.csv")
+
+rev_freq <- table(data$revenue)
+
+rev_freq
+```
+
+```{r}
+
+data <- read.csv("movies.csv")
+
+run_freq <- table(data$runtime)
+
+run_freq
+```
