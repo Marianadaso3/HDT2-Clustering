@@ -1,0 +1,67 @@
+---
+title: "HDT2-Clustering"
+author: "Grupo9"
+date: "2023-02-18"
+output: html_document
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, include=FALSE}
+#Nos ayuda a calcular la silueta
+library(cluster)
+#Nos ayuda para kmeans
+library(e1071)
+#Nos ayuda para los Gaussian  mixtures
+library(mclust)
+#Nos ayuda para realizar el plotcluster # nolint
+library(fpc)
+#Nos ayuda para poder determinar el número de clusters que es más óptimo
+library(NbClust)
+#Nos ayuda Para hacer gráficos mas amigables del clustering
+library(factoextra)
+#Nos ayuda para verificar si vale la pena hacer agrupamientos
+library(hopkins)
+#Nos ayuda a realizar el conjunto de graficos
+library(GGally)
+#Nos ayuda para realizar un mapa de calor y obtener una mejor visualización
+library(pheatmap)
+library(ggrepel)
+#Preprocesamiento
+datos <- read.csv("movies.csv")
+#Normalizar datos
+datos <- datos[complete.cases(read.csv("movies.csv")), ]
+popularity <- datos[, "popularity"]
+presupuesto <- datos[, "budget"]
+income <- datos[, "revenue"]
+duration <- datos[, "runtime"]
+countVotes <- datos[, "voteCount"] # nolint
+cle <- data.frame(popularity, presupuesto, income, duration, countVotes)
+clusteringVar <- scale(cle) # nolint
+```
+
+
+### 1. Haga el preprocesamiento del dataset, explique qué variables no aportan información a la generación de grupos y por qué. Describa con qué variables calculará los grupos.
+
+Las variables que no son correctas de utilizar son aquellas definidas como categóricas. Esto se debe a que al no ser numericas como tal, no son las mas adecuadas para el análisis.
+Por otro lado, las que si pueden se4r factibles para proporcionar datos analiticos correctos son todas aquellas que son numéricas para poder establecer relaciones.
+<br/> Las varibales que se usaron para este análisis son las siguientes:
+<br/> popularity: Que es el índice de popularity de la película calculado semanalmente
+<br/> revenue: El ingreso de la película
+<br/> runtime: La duración de la película
+<br/> voteCount: El número de votos en la plataforma para la película
+<br/> budget: El presupuesto para la película
+<br/> 
+
+### 2. Analice la tendencia al agrupamiento usando el estadístico de Hopkings y la VAT (Visual Assessment of cluster Tendency) Discuta sus resultados e impresiones. 
+
+```{r} 
+hopkins(clusteringVar)
+#Matriz de distancia
+datos_dist <- dist(clusteringVar)
+```
+Al aplicar el metodo de Hopkins podemos observar que el valor estadístico que obtenemos es de 0.999, el cual se encuentra
+lejano al valor guia de 0.5. Esto significa que los datos no son aleatorios, involucrando que si es factible que estos mismos sean agurpados.  
